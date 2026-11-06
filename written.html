@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Medical & University Biology Written Practice (৭২১ লিখিত প্রশ্নব্যাংক)</title>
+  
+  <!-- Inter & Bengali Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for Scientific Notation & LaTeX Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+  <!-- SolaimanLipi Best Bengali Font CDN -->
+  <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="written.css">
+</head>
+<body class="theme-light">
+  <div id="app" class="app-container">
+    
+    <!-- Top Mobile-First Header -->
+    <header class="app-header">
+      <div class="header-row-primary">
+        <div class="header-brand">
+          <span class="app-title">Shatadhru AI Written</span>
+          <span id="active-written-count" class="active-chapter-indicator">৭২১ লিখিত ভর্তি প্রশ্ন</span>
+        </div>
+        <div class="header-actions">
+          <a href="/" class="btn btn-sm btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="Switch back to MCQ Mode">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>MCQ মোড</span>
+          </a>
+          <button id="btn-toggle-filters" class="btn btn-sm btn-outline">ফিল্টার</button>
+          <button id="btn-toggle-all-answers" class="btn btn-sm btn-primary">সকল উত্তর</button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div class="header-row-metrics">
+        <div class="metric-item">
+          <span class="metric-lbl">মোট লিখিত:</span>
+          <span id="written-total-count" class="metric-val">721</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-lbl">অনুশীলিত:</span>
+          <span id="written-practiced-count" class="metric-val">0</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-lbl">AI মূল্যায়ন:</span>
+          <span id="written-evaluated-count" class="metric-val" style="color: var(--color-accent);">0</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Written Filter Drawer / Bar -->
+    <section id="written-filter-panel" class="written-filter-panel">
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label for="filter-subject" class="filter-label">বিষয় (Subject)</label>
+          <select id="filter-subject" class="drawer-select">
+            <option value="all">সকল বিষয় (Botany & Zoology)</option>
+            <option value="Botany">উদ্ভিদবিজ্ঞান (Botany)</option>
+            <option value="Zoology">প্রাণীবিজ্ঞান (Zoology)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-chapter" class="filter-label">অধ্যায় (Chapter)</label>
+          <select id="filter-chapter" class="drawer-select">
+            <option value="all">সকল অধ্যায় (All Chapters)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-university" class="filter-label">বিশ্ববিদ্যালয় (University)</label>
+          <select id="filter-university" class="drawer-select">
+            <option value="all">সকল বিশ্ববিদ্যালয় (All Varsities)</option>
+            <option value="DU">ঢাকা বিশ্ববিদ্যালয় (DU)</option>
+            <option value="JU">জাহাঙ্গীরনগর বিশ্ববিদ্যালয় (JU)</option>
+            <option value="RU">রাজশাহী বিশ্ববিদ্যালয় (RU)</option>
+            <option value="CU">চট্টগ্রাম বিশ্ববিদ্যালয় (CU)</option>
+            <option value="JnU">জগন্নাথ বিশ্ববিদ্যালয় (JnU)</option>
+            <option value="MAT">মেডিকেল ও ডেন্টাল (MAT/DAT)</option>
+            <option value="Agri">কৃষি গুচ্ছ (Agri Cluster)</option>
+            <option value="GST">সাধারণ গুচ্ছ (GST Cluster)</option>
+            <option value="BUP">BUP</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-search" class="filter-label">কীওয়ার্ড সার্চ (Search)</label>
+          <input type="text" id="filter-search" class="drawer-select" placeholder="প্রশ্ন বা টপিক খুঁজুন...">
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Written Practice Canvas -->
+    <main class="practice-main">
+      <div id="written-viewport" class="questions-viewport">
+        <div class="loading-state" style="text-align: center; padding: 48px 16px; color: var(--text-muted);">
+          <div class="ai-pulse-dot" style="margin: 0 auto 12px;"></div>
+          <span>মেডিকেল ও বিশ্ববিদ্যালয় ভর্তি লিখিত প্রশ্নব্যাংক লোড হচ্ছে...</span>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Written Application Logic Script -->
+  <script src="written.js"></script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+/* ==========================================================================
+   Biology Admission Written Practice Stylesheet (written.css)
+   Mobile-First, Academic-Grade, LaTeX & Table Formatted
+   ========================================================================== */
+
+.written-filter-panel {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-main);
+  padding: 10px 14px;
+  display: block;
+  transition: all 0.2s ease;
+}
+
+.written-filter-panel.collapsed {
+  display: none;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Written Question Card */
+.written-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.written-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.written-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.written-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.written-num-badge {
+  background-color: var(--bg-active);
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-main);
+}
+
+.written-uni-badge {
+  background-color: rgba(15, 118, 110, 0.1);
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(15, 118, 110, 0.25);
+}
+
+.written-q-text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  padding-left: 2px;
+}
+
+/* Student Drafting Section */
+.student-draft-section {
+  background-color: var(--bg-hover);
+  border: 1px dashed var(--border-main);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.draft-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.draft-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.draft-counter {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.written-textarea {
+  width: 100%;
+  min-height: 90px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-main);
+  resize: vertical;
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.written-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.15);
+}
+
+.draft-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-ai-eval {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-ai-eval:hover {
+  background-color: var(--color-accent-hover, #0d9488);
+}
+
+.btn-ai-eval:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-model-toggle {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-model-toggle:hover {
+  background-color: var(--bg-active);
+}
+
+/* AI Evaluation Feedback Card */
+.ai-eval-container {
+  margin-top: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(15, 118, 110, 0.3);
+  background-color: rgba(15, 118, 110, 0.03);
+  padding: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.ai-eval-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.15);
+  padding-bottom: 8px;
+}
+
+.ai-eval-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.eval-score-badge {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.eval-summary-box {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.eval-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 10px 0 4px;
+}
+
+.eval-list {
+  margin: 0 0 10px 0;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.eval-list li {
+  margin-bottom: 4px;
+}
+
+.eval-list.correct li {
+  color: var(--color-success);
+}
+
+.eval-list.missing li {
+  color: var(--color-danger);
+}
+
+.eval-tip-box {
+  background-color: var(--bg-surface);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+/* Official Textbook Model Answer Container */
+.model-answer-container {
+  margin-top: 14px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border-left: 4px solid var(--color-success);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.model-answer-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-success);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.model-answer-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-main);
+}
+
+.model-answer-body p {
+  margin-bottom: 8px;
+}
+
+/* Markdown Table in Model Answers */
+.model-answer-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.model-answer-body th,
+.model-answer-body td {
+  border: 1px solid var(--border-main);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.model-answer-body th {
+  background-color: var(--bg-hover);
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.model-answer-body tr:nth-child(even) {
+  background-color: var(--bg-surface);
+}
+
+.model-answer-body tr:nth-child(odd) {
+  background-color: var(--bg-hover);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 600px) {
+  .questions-viewport {
+    padding: 6px 6px 72px 6px !important;
+  }
+  .written-card {
+    padding: 10px 10px 12px 10px !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  .written-q-text {
+    font-size: 15px !important;
+    line-height: 1.58 !important;
+    margin-bottom: 10px !important;
+  }
+  .student-draft-section {
+    padding: 8px 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .written-textarea {
+    min-height: 75px !important;
+    padding: 8px 10px !important;
+    font-size: 13.5px !important;
+  }
+  .draft-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px !important;
+    margin-top: 8px !important;
+  }
+  .btn-ai-eval, .btn-model-toggle {
+    justify-content: center;
+    width: 100%;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
