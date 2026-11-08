@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Shatadhru AI | Admission Practice Portal — উচ্চতর গণিত ও জীববিজ্ঞান</title>
+  
+  <!-- Best Bengali Fonts & Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --font-bn: 'SolaimanLipi', system-ui, -apple-system, sans-serif;
+      --font-en: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      
+      /* Dark Theme (Default) */
+      --bg-base: #090d16;
+      --bg-surface: #111827;
+      --bg-card: #182235;
+      --bg-card-hover: #1f2c44;
+      --border: #26354f;
+      --border-accent: #3b82f6;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      --math-accent: #38bdf8;
+      --math-glow: rgba(56, 189, 248, 0.25);
+      --math-grad: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      
+      --bio-accent: #10b981;
+      --bio-glow: rgba(16, 185, 129, 0.25);
+      --bio-grad: linear-gradient(135deg, #059669 0%, #34d399 100%);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"] {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-subtle: #64748b;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-bn);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Ambient background glows */
+    .ambient-glow-1 {
+      position: absolute;
+      top: -120px;
+      left: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-2 {
+      position: absolute;
+      top: 100px;
+      right: 5%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    .portal-header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+    }
+
+    [data-theme="light"] .portal-header {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #38bdf8 0%, #10b981 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    }
+
+    .brand-name {
+      font-family: var(--font-en);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .brand-name span {
+      background: linear-gradient(90deg, var(--math-accent), var(--bio-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-tagline {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--text-subtle);
+    }
+
+    /* Main Container */
+    .portal-main {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Hero */
+    .portal-hero {
+      text-align: center;
+      max-width: 780px;
+      margin-bottom: 3.5rem;
+    }
+
+    .portal-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--math-accent);
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title .highlight-math {
+      color: var(--math-accent);
+      position: relative;
+    }
+
+    .hero-title .highlight-bio {
+      color: var(--bio-accent);
+      position: relative;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Subject Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      margin-bottom: 4rem;
+    }
+
+    .subject-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+    }
+
+    .subject-card.math-card:hover {
+      border-color: var(--math-accent);
+    }
+
+    .subject-card.bio-card:hover {
+      border-color: var(--bio-accent);
+    }
+
+    .card-top-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .math-card .card-top-indicator {
+      background: var(--math-grad);
+    }
+
+    .bio-card .card-top-indicator {
+      background: var(--bio-grad);
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .math-card .card-icon-wrap {
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--math-accent);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .bio-card .card-icon-wrap {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--bio-accent);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .badge-count {
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-en);
+    }
+
+    .math-card .badge-count {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--math-accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .bio-card .badge-count {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--bio-accent);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-subtle);
+      margin-bottom: 1.25rem;
+      font-family: var(--font-en);
+    }
+
+    .card-description {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.75rem;
+      flex: 1;
+    }
+
+    .card-features-list {
+      list-style: none;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .card-features-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .feature-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Action Buttons */
+    .btn-action-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .math-btn {
+      background: var(--math-grad);
+      color: #0f172a;
+    }
+
+    .math-btn:hover {
+      box-shadow: 0 6px 25px var(--math-glow);
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+    }
+
+    .bio-btn {
+      background: var(--bio-grad);
+      color: #042f2e;
+    }
+
+    .bio-btn:hover {
+      box-shadow: 0 6px 25px var(--bio-glow);
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+    }
+
+    .quick-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .quick-links a {
+      color: var(--text-subtle);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .quick-links a:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+
+    /* Capabilities Strip */
+    .capabilities-section {
+      width: 100%;
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      text-align: center;
+    }
+
+    .section-headline {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--text-main);
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      text-align: left;
+    }
+
+    .cap-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+
+    .cap-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .cap-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .cap-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .portal-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-subtle);
+      background: var(--bg-surface);
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 1.85rem;
+      }
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+      .subject-card {
+        padding: 1.5rem;
+      }
+      .portal-header {
+        padding: 0.75rem 1rem;
+      }
+      .brand-badge {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+      }
+      .brand-name {
+        font-size: 1.1rem;
+      }
+      .brand-tagline {
+        display: none;
+      }
+      .portal-main {
+        padding: 1.5rem 1rem 3rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Header -->
+  <header class="portal-header">
+    <a href="/" class="brand-wrap">
+      <div class="brand-badge">S</div>
+      <div>
+        <div class="brand-name">Shatadhru <span>AI</span></div>
+        <div class="brand-tagline">University & Medical Admission Practice Engine</div>
+      </div>
+    </a>
+    
+    <div class="header-controls">
+      <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
+        <span id="theme-icon">☀️</span>
+        <span id="theme-label">Light</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="portal-main">
+    
+    <!-- Hero Section -->
+    <section class="portal-hero">
+      <div class="portal-pill">
+        <span>⚡</span> ভার্সিটি ও মেডিকেল ভর্তি প্রস্তুতি ২০২৫-২৬
+      </div>
+      <h1 class="hero-title">
+        আপনার বিষয় নির্বাচন করুন — <br>
+        <span class="highlight-math">উচ্চতর গণিত</span> অথবা <span class="highlight-bio">জীববিজ্ঞান</span>
+      </h1>
+      <p class="hero-subtitle">
+        বিগত ২০+ বছরের ঢাকা বিশ্ববিদ্যালয়, বুয়েট, মেডিকেল ও গুচ্ছসহ সকল বিশ্ববিদ্যালয়ের প্রশ্নব্যাংক, শতদ্রু AI লাইভ এক্সপ্লেনেশন ও শর্টকাট ট্রিকস সমৃদ্ধ প্র্যাকটিস প্ল্যাটফর্ম।
+      </p>
+    </section>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid">
+      
+      <!-- CARD 1: Higher Mathematics -->
+      <div class="subject-card math-card">
+        <div class="card-top-indicator"></div>
+        <div>
+          <div class="card-header-row">
+            <div class="card-icon-wrap">📐</div>
+            <span class="badge-count">২০ অধ্যায় | ২,২০০+ MCQ</span>
+          </div>
+          
+          <h2 class="card-title">উচ্চতর গণিত (Mathematics)</h2>
+          <div class="card-subtitle">HSC 1st & 2nd Paper — Full Question Bank</div>
+          
+          <p class="card-description">
+            ম্যাট্রিক্স, সরলরেখা, বৃত্ত, ডিফারেন্সিয়েশন, ইন্টিগ্রেশন, জটিল সংখ্যা, কণিক ও স্থিতিবিদ্যার প্রতিটি টাইপভিত্তিক প্রশ্ন, KaTeX সমীকরণ রেন্ডারিং এবং ভর্তি পরীক্ষার শর্টকাট সলভিং।
+          </p>
+
+          <ul class="card-features-list">
+            <li>
+              <span class="feature-icon">🧮</span>
+              <span><strong>KaTeX গাণিতিক সমীকরণ:</strong> নিখুঁত মেট্রিক্স, লিমিট ও ইন্টিগ্রাল</span>
+            </li>
+            <li>
+              <span class="feature-icon">⚡</span>
+              <span><strong>AI শর্টকাট ট্রিকস:</strong> ৩০ সেকেন্ডে অপশন এলিমিনেশন কৌশল</span>
+            </li>
+            <li>
+              <span class="feature-icon">📊</span>
+              <span><strong>টাইপভিত্তিক প্রশ্নব্যাংক:</strong> BUET, DU, RU, CU, GST সলভ</span>
+            </li>
+            <li>
+              <span class="feature-icon">📝</span>
+              <span><strong>ফর্মুলা চিটশিট (.md):</strong> চ্যাপ্টার-ভিত্তিক সূত্র ও সাজেশন ডাউনলোড</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 0.5rem;">
+            <a href="/concept-review" class="btn-action-primary" style="background: rgba(56, 189, 248, 0.15); color: var(--math-accent); border: 1px solid rgba(56, 189, 248, 0.4);">
+              <span>অধ্যায়ভিত্তিক কনসেপ্ট রিভিউ (Concept Review)</span>
+              <span>→</span>
+            </a>
+            <a href="/math" class="btn-action-primary math-btn">
+              <span>ম্যাথ প্রশ্ন প্র্যাকটিস</span>
+              <span>→</span>
+            </a>
+          </div>
+          <div class="quick-links">
+            <a href="/concept-review">কনসেপ্ট রিভিউ</a>
+            <span>•</span>
+            <a href="/math">১ম পত্র (১০ অধ্যায়)</a>
+            <span>•</span>
+            <a href="/math">২য় পত্র (১০ অধ্যায়)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: Biology -->
+      <div class="subject-card bio-card">
+        <div class="card-top-indicator"></div>
+        <div>
+          <div class="card-header-row">
+            <div class="card-icon-wrap">🧬</div>
+            <span class="badge-count">২৩ অধ্যায় | ৩,৮৭৪টি প্রশ্ন</span>
+          </div>
+          
+          <h2 class="card-title">জীববিজ্ঞান (Biology)</h2>
+          <div class="card-subtitle">Botany & Zoology — Medical & Varsity Standard</div>
+          
+          <p class="card-description">
+            ড. মোহাম্মদ আবুল হাসান ও প্রফেসর গাজী আজমল পাঠ্যবই স্ট্যান্ডার্ড মেডিকেল ও ভার্সিটি ভর্তি প্রশ্নব্যাংক, নেগেটিভ মার্কিং ট্র্যাপ ওয়ার্নিং এবং বিস্তারিত কনসেপ্ট এনালাইসিস।
+          </p>
+
+          <ul class="card-features-list">
+            <li>
+              <span class="feature-icon">🔬</span>
+              <span><strong>মেডিকেল স্পেশাল ফোকাস:</strong> MAT, DAT ও ঢাবির নির্ভুল ব্যাখ্যা</span>
+            </li>
+            <li>
+              <span class="feature-icon">💡</span>
+              <span><strong>শতদ্রু AI ব্যাখ্যা:</strong> ৩টি ভিন্ন ব্যক্তিত্বে সহজ বোধগম্যতা</span>
+            </li>
+            <li>
+              <span class="feature-icon">📜</span>
+              <span><strong>সব স্ক্রল ও পেজ মোড:</strong> সুবিধাজনক রিডিং ও পরীক্ষা দেওয়ার ব্যবস্থা</span>
+            </li>
+            <li>
+              <span class="feature-icon">🎯</span>
+              <span><strong>ভুল প্রশ্ন ট্র্যাকিং:</strong> Mistakes First রিভিশন অ্যালগরিদম</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <a href="/biology" class="btn-action-primary bio-btn">
+            <span>বায়োলজি প্র্যাকটিস শুরু করুন</span>
+            <span>→</span>
+          </a>
+          <div class="quick-links">
+            <a href="/biology">MCQ প্র্যাকটিস</a>
+            <span>•</span>
+            <a href="/written">লিখিত (Written)</a>
+            <span>•</span>
+            <a href="/biology">রিসার্চ সাজেশন</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Platform Capabilities -->
+    <section class="capabilities-section">
+      <h3 class="section-headline">শতদ্রু AI প্ল্যাটফর্মের বিশেষ সুবিধাসমূহ</h3>
+      
+      <div class="capabilities-grid">
+        <div class="cap-box">
+          <div class="cap-icon">🤖</div>
+          <h4 class="cap-title">লাইভ AI এক্সপ্লেনেশন ও অডিট</h4>
+          <p class="cap-text">যেকোনো প্রশ্নের সঠিকতা পরীক্ষা ও প্রতি পদে পদে কনফিউশন দূর করতে শতদ্রু AI তাৎক্ষণিক সহায়তা করে।</p>
+        </div>
+
+        <div class="cap-box">
+          <div class="cap-icon">🎯</div>
+          <h4 class="cap-title">বহুমাত্রিক ফিল্টারিং</h4>
+          <p class="cap-text">অধ্যায়, বিশ্ববিদ্যালয় (DU, RU, BUET, GST ইত্যাদি) এবং সেশন (২৪-২৫, ২৩-২৪) ধরে প্রশ্ন ফিল্টার করার সুবিধা।</p>
+        </div>
+
+        <div class="cap-box">
+          <div class="cap-icon">⏱️</div>
+          <h4 class="cap-title">টাইমার ও মক টেস্ট</h4>
+          <p class="cap-text">৩০, ৪৫ বা ৬০ মিনিটের টাইমড সেশন চালু করে রিয়েল এক্সাম এনভায়রনমেন্টে প্রস্তুতি যাচাই করুন।</p>
+        </div>
+
+        <div class="cap-box">
+          <div class="cap-icon">📥</div>
+          <h4 class="cap-title">Markdown সাজেশন ডাউনলোড</h4>
+          <p class="cap-text">উচ্চফলনশীল টপিক, সূত্র তালিকা ও বিগত ২০ বছরের ট্রেন্ড বিশ্লেষণ এক ক্লিকে ডাউনলোড বা কপি করুন।</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="portal-footer">
+    <p>© 2026 Shatadhru AI Admission Practice Platform. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Theme Toggle
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const themeLabel = document.getElementById('theme-label');
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      if (theme === 'light') {
+        themeIcon.innerText = '🌙';
+        themeLabel.innerText = 'Dark';
+      } else {
+        themeIcon.innerText = '☀️';
+        themeLabel.innerText = 'Light';
+      }
+      localStorage.setItem('portal_theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('portal_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      applyTheme(current === 'light' ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

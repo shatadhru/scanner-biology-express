@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>কনসেপ্ট রিভিউ (Concept Review) — উচ্চতর গণিত | শতদ্রু AI</title>
+  
+  <!-- Typography -->
+  <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for pristine math formula rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Marked for markdown responses -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="concept-review.css">
+</head>
+<body>
+  <!-- Ambient background glow (subtle) -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <button id="btn-toggle-sidebar" class="icon-btn mobile-only" aria-label="Open Chapter Menu" title="অধ্যায় তালিকা">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <a href="/" class="brand-link" title="পোর্টাল হোম">
+        <span class="brand-badge">∑</span>
+        <div class="brand-text">
+          <span class="brand-title">Shatadhru AI</span>
+          <span class="brand-subtitle">Concept Review · উচ্চতর গণিত</span>
+        </div>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <nav class="header-nav desktop-only">
+        <a href="/math" class="nav-item">প্রশ্ন প্র্যাকটিস</a>
+        <a href="/concept-review" class="nav-item active">কনসেপ্ট রিভিউ</a>
+        <a href="/biology" class="nav-item">জীববিজ্ঞান</a>
+      </nav>
+    </div>
+
+    <!-- Live Search & Global Actions -->
+    <div class="header-center">
+      <div class="search-box-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="global-search-input" class="search-input" placeholder="অধ্যায়, টপিক, সূত্র বা কনসেপ্ট খুঁজুন..." autocomplete="off">
+        <button id="btn-clear-search" class="clear-search-btn" style="display:none;" title="মুছে ফেলুন" aria-label="Clear Search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Progress Meter -->
+      <div class="progress-badge" title="আপনার কনসেপ্ট রিভিউ অগ্রগতি">
+        <span class="progress-label">রিভিউ অগ্রগতি:</span>
+        <span id="header-progress-text" class="progress-val">০ / ২০</span>
+        <div class="progress-mini-bar">
+          <div id="header-progress-bar" class="progress-mini-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- Common AI Chat Trigger Button -->
+      <button id="btn-open-common-chat" class="btn btn-subtle-accent" title="সার্বজনীন গণিত চ্যাট">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span class="desktop-only">সার্বজনীন গণিত চ্যাট</span>
+      </button>
+
+      <!-- Theme Switcher -->
+      <button id="btn-theme-toggle" class="icon-btn" title="লাইট / ডার্ক মোড" aria-label="Toggle Theme">
+        <svg id="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg id="theme-icon-moon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Chapter Selector Bar (Mobile Only) -->
+  <div class="mobile-chapter-bar mobile-only">
+    <button id="btn-mobile-chapter-selector" class="mobile-chapter-selector-btn" aria-label="Open Chapter Selector">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <span id="mobile-bar-chapter-title">অধ্যায় ০১: ম্যাট্রিক্স ও নির্ণায়ক</span>
+      <span class="mobile-selector-arrow">▾</span>
+    </button>
+  </div>
+
+  <!-- Main Application Layout -->
+  <div class="app-layout">
+    
+    <!-- Sidebar Navigation Pane -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <!-- Paper Filter Tabs -->
+      <div class="sidebar-paper-filter">
+        <button class="paper-tab-btn active" data-paper="all">সকল অধ্যায়</button>
+        <button class="paper-tab-btn" data-paper="First-Paper">১ম পত্র (১০)</button>
+        <button class="paper-tab-btn" data-paper="Second-Paper">২য় পত্র (১০)</button>
+      </div>
+
+      <!-- Chapter Accordion / Hierarchy List -->
+      <div id="chapters-nav-list" class="chapters-nav-list">
+        <!-- Rendered dynamically by concept-review.js -->
+        <div class="sidebar-loader">অধ্যায় ও কনসেপ্ট তালিকা প্রস্তুত হচ্ছে...</div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Backdrop for Mobile -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <!-- Main Content Reading Area -->
+    <main id="main-content" class="main-content">
+      
+      <!-- Search Results Overlay (Visible during search) -->
+      <div id="search-results-panel" class="search-results-panel" style="display: none;">
+        <div class="search-results-header">
+          <h3 id="search-results-title">অনুসন্ধান ফলাফল</h3>
+          <button id="btn-close-search-results" class="btn btn-sm btn-subtle">বন্ধ করুন</button>
+        </div>
+        <div id="search-results-list" class="search-results-list"></div>
+      </div>
+
+      <!-- Active Concept Viewport -->
+      <article id="concept-viewport" class="concept-viewport">
+        
+        <!-- Concept Top Banner & Navigation -->
+        <header class="concept-header">
+          <div class="concept-breadcrumb">
+            <span id="crumb-paper">উচ্চতর গণিত ১ম পত্র</span>
+            <span class="crumb-separator">/</span>
+            <span id="crumb-chapter">অধ্যায় ০১: ম্যাট্রিক্স ও নির্ণায়ক</span>
+            <span class="crumb-separator">/</span>
+            <span id="crumb-topic">টপিক: প্রকারভেদ ও সমতা</span>
+          </div>
+
+          <div class="concept-title-row">
+            <h1 id="active-concept-title" class="active-concept-title">ম্যাট্রিক্সের সমতা ও ট্রেস (Equality & Trace)</h1>
+            <div class="concept-actions">
+              <button id="btn-mark-reviewed" class="btn btn-sm btn-outline-success" title="রিভিউ সম্পন্ন হিসেবে সংরক্ষণ করুন">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span id="mark-reviewed-label">রিভিউ সম্পন্ন করুন</span>
+              </button>
+              <button id="btn-scroll-to-practice" class="btn btn-sm btn-subtle" title="এই কনসেপ্টের প্রশ্ন অনুশীলন করুন">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                <span>টাইপ প্র্যাকটিস</span>
+              </button>
+              <button id="btn-scroll-to-ai" class="btn btn-sm btn-subtle-accent" title="শতদ্রু AI রিসার্চ চ্যাট খুলুন">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>AI রিসার্চ</span>
+              </button>
+            </div>
+          </div>
+          
+          <p id="active-concept-summary" class="active-concept-summary">
+            ম্যাট্রিক্সের সমতার শর্ত, ভুক্তি তুলনা এবং বর্গ ম্যাট্রিক্সের ট্রেস নির্ণয়ের কৌশল।
+          </p>
+        </header>
+
+        <!-- Concept Quick Navigation Sub-bar -->
+        <nav class="concept-sections-nav" aria-label="Concept Sections">
+          <a href="#sec-intro" class="sec-nav-link active">A. পরিচিতি</a>
+          <a href="#sec-explanation" class="sec-nav-link">B. সহজ ব্যাখ্যা</a>
+          <a href="#sec-formulas" class="sec-nav-link">C. অপরিহার্য সূত্র</a>
+          <a href="#sec-analysis" class="sec-nav-link">D. কনসেপ্ট বিশ্লেষণ</a>
+          <a href="#sec-patterns" class="sec-nav-link">E. প্রশ্ন প্যাটার্ন</a>
+          <a href="#sec-easy-example" class="sec-nav-link">F. সহজ উদাহরণ</a>
+          <a href="#sec-exam-example" class="sec-nav-link">G. ভর্তি পরীক্ষা উদাহরণ</a>
+          <a href="#sec-quick-revision" class="sec-nav-link">H. কুইক রিভিশন</a>
+          <a href="#sec-practice-system" class="sec-nav-link sec-highlight">টাইপভিত্তিক রিভিশন</a>
+          <a href="#sec-ai-research" class="sec-nav-link sec-ai-highlight">শতদ্রু AI রিসার্চ</a>
+        </nav>
+
+        <!-- 8 Detailed Learning Sections (A to H) -->
+        <div class="concept-sections-body">
+          
+          <!-- SECTION A: Concept Introduction -->
+          <section id="sec-intro" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">A</span>
+              <h2 class="section-heading">কনসেপ্ট পরিচিতি (Concept Introduction)</h2>
+            </div>
+            <div class="intro-grid">
+              <div class="intro-card">
+                <div class="intro-card-title">এই কনসেপ্টটি কী? (What is it?)</div>
+                <div id="intro-what" class="intro-card-content">লোড হচ্ছে...</div>
+              </div>
+              <div class="intro-card">
+                <div class="intro-card-title">কেন এটি গুরুত্বপূর্ণ? (Why is it important?)</div>
+                <div id="intro-why" class="intro-card-content">লোড হচ্ছে...</div>
+              </div>
+              <div class="intro-card">
+                <div class="intro-card-title">কোথায় এর প্রয়োগ হয়? (Where is it used?)</div>
+                <div id="intro-where" class="intro-card-content">লোড হচ্ছে...</div>
+              </div>
+              <div class="intro-card">
+                <div class="intro-card-title">শেখার পূর্বশর্ত (Prerequisites)</div>
+                <div id="intro-prereq" class="intro-card-content">লোড হচ্ছে...</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION B: Easy Explanation -->
+          <section id="sec-explanation" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">B</span>
+              <h2 class="section-heading">সহজ ব্যাখ্যা (Easy Explanation)</h2>
+            </div>
+            <div class="section-description-hint">
+              পাঠ্যবইয়ের চেয়েও সহজ ও বোধগম্য ভাষায় কেন এই কনসেপ্টটি কাজ করে তার বিশ্লেষণ:
+            </div>
+            <div id="easy-explanation-content" class="rich-text-block"></div>
+          </section>
+
+          <!-- SECTION C: Important Formulas -->
+          <section id="sec-formulas" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">C</span>
+              <h2 class="section-heading">অপরিহার্য সূত্রাবলি (Important Formulas)</h2>
+            </div>
+            <div class="section-description-hint">
+              প্রতিটি সূত্রের অর্থ, ব্যবহারের শর্ত, চলক বিশ্লেষণ ও সাধারণ ভুলের সতর্কতা:
+            </div>
+            <div id="formulas-list-container" class="formulas-list-container"></div>
+          </section>
+
+          <!-- SECTION D: Concept Analysis -->
+          <section id="sec-analysis" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">D</span>
+              <h2 class="section-heading">কনসেপ্ট বিশ্লেষণ (Concept Analysis)</h2>
+            </div>
+            <div class="analysis-container">
+              <div class="analysis-row">
+                <span class="analysis-lbl">গুরুত্বপূর্ণ শর্তাবলি (Conditions):</span>
+                <span id="analysis-conditions" class="analysis-val"></span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-lbl">সাধারণ রূপভেদ (Variations):</span>
+                <span id="analysis-variations" class="analysis-val"></span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-lbl">অন্যান্য কনসেপ্টের সাথে সম্পর্ক (Relationships):</span>
+                <span id="analysis-relationships" class="analysis-val"></span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-lbl">গাণিতিক রূপান্তর কৌশল (Transformations):</span>
+                <span id="analysis-transformations" class="analysis-val"></span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-lbl">যেখানে ভুল বোঝাবুঝি ঘটে (Misunderstandings):</span>
+                <span id="analysis-misunderstandings" class="analysis-val text-warning"></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION E: Question Pattern Analysis -->
+          <section id="sec-patterns" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">E</span>
+              <h2 class="section-heading">প্রশ্ন প্যাটার্ন বিশ্লেষণ (Question Pattern Analysis)</h2>
+            </div>
+            <div class="section-description-hint">
+              এই কনসেপ্ট থেকে ভর্তি ও বোর্ড পরীক্ষায় কোন কোন প্যাটার্নে প্রশ্ন আসে এবং তা চেনার কৌশল:
+            </div>
+            <div id="patterns-list-container" class="patterns-list-container"></div>
+          </section>
+
+          <!-- SECTION F: Easy Example -->
+          <section id="sec-easy-example" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">F</span>
+              <h2 class="section-heading">সহজ উদাহরণ ও সমাধান (Easy Example)</h2>
+            </div>
+            <div class="example-box easy-box">
+              <div class="example-meta">সহজ বোধগম্য উদাহরণ</div>
+              <div id="easy-example-problem" class="example-problem"></div>
+              <div class="example-solution-wrap">
+                <div class="solution-header">ধাপে ধাপে সমাধান:</div>
+                <div id="easy-example-steps" class="solution-steps"></div>
+                <div id="easy-example-answer" class="solution-final-answer"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION G: Exam-Level Example -->
+          <section id="sec-exam-example" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">G</span>
+              <h2 class="section-heading">ভর্তি/বোর্ড পরীক্ষার প্রশ্ন ও বিশ্লেষণ (Exam-Level Example)</h2>
+            </div>
+            <div class="example-box exam-box">
+              <div class="example-header-row">
+                <span id="exam-example-tag" class="exam-tag">BUET / DU / GST Admission</span>
+                <span class="exam-subtext">আসল প্রশ্নব্যাংক স্ট্যান্ডার্ড</span>
+              </div>
+              <div id="exam-example-problem" class="example-problem"></div>
+              
+              <div class="exam-analysis-grid">
+                <div class="exam-analysis-item">
+                  <div class="analysis-item-title">১. প্রশ্ন টাইপ শনাক্তকরণ ও সঠিক অ্যাপ্রোচ:</div>
+                  <div id="exam-example-recognition" class="analysis-item-content"></div>
+                </div>
+                <div class="exam-analysis-item">
+                  <div class="analysis-item-title">২. কেন এই সমাধানটি কাজ করে?</div>
+                  <div id="exam-example-why" class="analysis-item-content"></div>
+                </div>
+              </div>
+
+              <div class="example-solution-wrap">
+                <div class="solution-header">ধাপে ধাপে সমাধান:</div>
+                <div id="exam-example-solution" class="solution-steps"></div>
+              </div>
+
+              <div class="trick-callout">
+                <div class="trick-title">অনর্থক গণনা এড়ানোর শর্টকাট কৌশল:</div>
+                <div id="exam-example-trick" class="trick-content"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION H: Quick Revision -->
+          <section id="sec-quick-revision" class="learning-section">
+            <div class="section-badge-header">
+              <span class="section-code">H</span>
+              <h2 class="section-heading">কুইক রিভিশন (Quick Revision)</h2>
+            </div>
+            <div class="revision-card">
+              <div class="revision-grid">
+                <div class="revision-col">
+                  <div class="rev-block-title">অপরিহার্য সূত্রাবলি</div>
+                  <ul id="rev-formulas" class="rev-list"></ul>
+
+                  <div class="rev-block-title" style="margin-top: 1.25rem;">গুরুত্বপূর্ণ শর্তাবলি</div>
+                  <ul id="rev-conditions" class="rev-list"></ul>
+                </div>
+                <div class="revision-col">
+                  <div class="rev-block-title">কী অবজারভেশন ও স্বীকৃতি টিপস</div>
+                  <ul id="rev-observations" class="rev-list"></ul>
+
+                  <div class="rev-block-title text-warning" style="margin-top: 1.25rem;">সাধারণ ভুল (Avoid These)</div>
+                  <ul id="rev-mistakes" class="rev-list rev-mistakes"></ul>
+                </div>
+              </div>
+              <div class="rev-summary-footer">
+                <div class="rev-summary-lbl">লাস্ট-মিনিট রিভিশন সারসংক্ষেপ:</div>
+                <div id="rev-summary-text" class="rev-summary-text"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DEDICATED REQUIREMENT 3: Question-Type-wise Revision System -->
+          <section id="sec-practice-system" class="learning-section dedicated-revision-section">
+            <div class="section-badge-header">
+              <span class="section-code">3</span>
+              <div>
+                <h2 class="section-heading">টাইপভিত্তিক প্রশ্ন রিভিশন সিস্টেম (Question-Type-wise Revision)</h2>
+                <p class="section-subheading">প্রতিটি কনসেপ্টের ভিন্ন ভিন্ন প্রশ্ন প্যাটার্ন অনুযায়ী গ্রুপভিত্তিক প্রশ্ন এবং তাৎক্ষণিক সমাধান অনুশীলন</p>
+              </div>
+            </div>
+
+            <div id="question-types-container" class="question-types-container">
+              <!-- Rendered dynamically by concept-review.js -->
+            </div>
+          </section>
+
+          <!-- DEDICATED REQUIREMENT 5: শতদ্রু AI গণিত রিসার্চ চ্যাট -->
+          <section id="sec-ai-research" class="learning-section ai-research-section">
+            <div class="ai-section-header">
+              <div class="ai-header-left">
+                <div class="ai-badge-symbol">∑</div>
+                <div>
+                  <h2 class="ai-main-title">শতদ্রু AI গণিত রিসার্চ চ্যাট</h2>
+                  <p class="ai-subtitle">Ask Shatadhru AI about this chapter or proof.</p>
+                </div>
+              </div>
+              <div class="ai-context-indicator" id="ai-active-context-pill">
+                অধ্যায়: ম্যাট্রিক্স ও নির্ণায়ক
+              </div>
+            </div>
+
+            <!-- Exactly Two Main Tabs as Required -->
+            <div class="ai-tabs-bar">
+              <button id="tab-btn-suggestions" class="ai-tab-btn active" data-tab="tab-suggestions">
+                <span class="tab-num">TAB 1</span>
+                <span>Suggested Learning & Research</span>
+              </button>
+              <button id="tab-btn-ask" class="ai-tab-btn" data-tab="tab-ask">
+                <span class="tab-num">TAB 2</span>
+                <span>Ask About This Chapter</span>
+              </button>
+            </div>
+
+            <!-- TAB 1: Suggested Learning & Research -->
+            <div id="tab-suggestions" class="ai-tab-pane active">
+              <div class="tab-suggestions-header">
+                <div class="tab-description-note">
+                  বর্তমান অধ্যায় ও কনসেপ্ট সম্পর্কিত উচ্চফলনশীল গবেষণামূলক টপিকসমূহ। যেকোনো প্রস্তাবে ক্লিক করে শতদ্রু AI-কে জিজ্ঞাসা করুন:
+                </div>
+                <button id="btn-refresh-ai-suggestions" class="btn btn-sm btn-subtle-accent" title="নতুন এআই রিসার্চ আইডিয়া লোড করুন">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                  <span>নতুন আইডিয়া খুঁজুন</span>
+                </button>
+              </div>
+              <div id="ai-suggestions-grid" class="ai-suggestions-grid">
+                <!-- Rendered dynamically by concept-review.js -->
+              </div>
+            </div>
+
+            <!-- TAB 2: Ask About This Chapter -->
+            <div id="tab-ask" class="ai-tab-pane">
+              <div class="tab-ask-header">
+                <div class="tab-description-note">
+                  এই অধ্যায় বা কনসেপ্টের যেকোনো জটিল প্রমাণ, সূত্র, বিকল্প সমাধান বা প্রশ্ন সম্পর্কে সরাসরি শতদ্রু AI-কে জিজ্ঞাসা করুন। অধ্যায়ের প্রাসঙ্গিক কনটেক্সট স্বয়ংক্রিয়ভাবে প্রদান করা আছে।
+                </div>
+                <button id="btn-clear-chapter-chat" class="btn btn-sm btn-subtle" title="এই অধ্যায়ের চ্যাট কথোপকথন মুছে ফেলুন">
+                  মুছে ফেলুন
+                </button>
+              </div>
+
+              <!-- Quick Prompt Chips -->
+              <div class="chat-quick-chips">
+                <button class="quick-chip-btn" data-chip="এই অধ্যায়ের শীর্ষ ৩টি গুরুত্বপূর্ণ প্রমাণ ও তাদের প্রতিপাদন কৌশল সহজ বাংলায় ব্যাখ্যা করো।">শীর্ষ ৩টি প্রমাণ</button>
+                <button class="quick-chip-btn" data-chip="এই কনসেপ্ট থেকে ভর্তি পরীক্ষায় দ্রুত ৩০ সেকেন্ডে সমাধান করার শর্টকাট কৌশল দেখাও।">ভর্তি শর্টকাট</button>
+                <button class="quick-chip-btn" data-chip="এই অধ্যায়ের প্রশ্নে ছাত্রছাত্রীরা সচরাচর যেসব ফাঁদে ভুল করে তা স্পষ্ট করো।">সাধারণ ভুল ও ফাঁদ</button>
+                <button class="quick-chip-btn" data-chip="বোর্ড পরীক্ষা ও বুয়েট/ঢাবিতে এই কনসেপ্টের কমন প্রশ্ন প্যাটার্নগুলো কী কী?">প্রশ্ন প্যাটার্ন</button>
+              </div>
+
+              <!-- Chat Message Thread -->
+              <div id="chapter-chat-thread" class="chat-thread">
+                <div class="chat-msg ai-msg">
+                  <div class="msg-author">শতদ্রু AI (রিসার্চ সহায়ক):</div>
+                  <div class="msg-text">
+                    নমস্কার! আমি শতদ্রু AI। বর্তমানে নির্বাচিত অধ্যায় ও কনসেপ্টের উপর আপনার যেকোনো জটিল প্রমাণ, সমীকরণের শর্ত বা বিকল্প সমাধানের প্রশ্ন থাকলে নিচে লিখুন।
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chat Input Bar -->
+              <form id="chapter-chat-form" class="chat-input-bar">
+                <input type="text" id="chapter-chat-input" class="chat-input" placeholder="এই অধ্যায়ের যেকোনো প্রমাণ, সূত্র বা প্রশ্ন লিখুন..." autocomplete="off">
+                <button type="submit" id="btn-chapter-chat-submit" class="btn btn-primary chat-submit-btn">
+                  <span>জিজ্ঞাসা করুন</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+              </form>
+            </div>
+
+          </section>
+
+        </div>
+
+      </article>
+
+    </main>
+  </div>
+
+  <!-- DEDICATED REQUIREMENT 6: Global Common AI Chat (Modal / Drawer) -->
+  <div id="common-chat-backdrop" class="modal-backdrop" aria-hidden="true" style="display:none;"></div>
+  <aside id="common-chat-drawer" class="common-chat-drawer" style="display:none;" role="dialog" aria-labelledby="common-chat-title">
+    <div class="drawer-header-bar">
+      <div class="drawer-header-info">
+        <h3 id="common-chat-title" class="drawer-heading">সার্বজনীন গণিত চ্যাট (Common AI Chat)</h3>
+        <p class="drawer-subheading">যেকোনো অধ্যায়ের সাধারণ গণিত প্রশ্ন, ক্রস-অধ্যায় আলোচনা ও প্রমাণের জন্য</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button id="btn-clear-common-chat" class="btn btn-sm btn-subtle" title="চ্যাট মুছে ফেলুন">মুছে ফেলুন</button>
+        <button id="btn-close-common-chat" class="icon-btn" aria-label="Close Chat" title="বন্ধ করুন"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+    </div>
+
+    <!-- Quick Common Prompts -->
+    <div class="chat-quick-chips" style="padding: 0.65rem 1.25rem 0 1.25rem;">
+      <button class="quick-common-chip-btn" data-chip="ক্যালকুলাস এবং স্থানাঙ্ক জ্যামিতির মধ্যকার পারস্পরিক গভীর সংযোগ কীভাবে কাজ করে?">ক্যালকুলাস ও জ্যামিতি</button>
+      <button class="quick-common-chip-btn" data-chip="জটিল সংখ্যাকে কীভাবে ভেক্টর ও দ্বিমাত্রিক স্থানাঙ্কের মাধ্যমে রূপায়িত করা যায়?">জটিল সংখ্যা ও ভেক্টর</button>
+      <button class="quick-common-chip-btn" data-chip="বিন্যাস ও সমাবেশের মৌলিক পার্থক্য এবং বাস্তব প্রয়োগের সহজ নিয়ম কী?">বিন্যাস বনাম সমাবেশ</button>
+    </div>
+
+    <div class="drawer-body">
+      <div id="common-chat-thread" class="chat-thread">
+        <div class="chat-msg ai-msg">
+          <div class="msg-author">শতদ্রু AI (সার্বজনীন গণিত সহায়ক):</div>
+          <div class="msg-text">
+            স্বাগতম! এটি শতদ্রু AI এর সার্বজনীন গণিত চ্যাট। উচ্চতর গণিত ১ম ও ২য় পত্রের যেকোনো অধ্যায়, ক্রস-চ্যাপ্টার সংযোগ, জ্যামিতিক প্রমাণ বা ভর্তি পরীক্ষার প্রশ্ন সম্পর্কে যেকোনো জিজ্ঞাসা করতে পারেন।
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <form id="common-chat-form" class="chat-input-bar">
+        <input type="text" id="common-chat-input" class="chat-input" placeholder="যেকোনো গাণিতিক প্রশ্ন বা প্রমাণ লিখুন..." autocomplete="off">
+        <button type="submit" id="btn-common-chat-submit" class="btn btn-primary chat-submit-btn">
+          <span>পাঠান</span>
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Mobile Bottom Drawer for Chapter & Topic Navigation (Requirement 4) -->
+  <div id="mobile-bottom-drawer-backdrop" class="modal-backdrop" aria-hidden="true" style="display:none;"></div>
+  <aside id="mobile-bottom-drawer" class="mobile-bottom-drawer" style="display:none;" role="dialog" aria-labelledby="mobile-drawer-heading">
+    <div class="mobile-drawer-handle-bar">
+      <div class="mobile-drawer-handle" aria-hidden="true"></div>
+    </div>
+    <div class="mobile-drawer-header">
+      <h3 id="mobile-drawer-heading" class="mobile-drawer-title">অধ্যায় ও কনসেপ্ট নির্বাচন</h3>
+      <button id="btn-close-mobile-drawer" class="icon-btn" aria-label="Close Drawer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    </div>
+    <!-- Paper Filter for Mobile Drawer -->
+    <div class="sidebar-paper-filter mobile-drawer-filter">
+      <button class="mobile-paper-tab-btn active" data-paper="all">সকল অধ্যায়</button>
+      <button class="mobile-paper-tab-btn" data-paper="First-Paper">১ম পত্র (১০)</button>
+      <button class="mobile-paper-tab-btn" data-paper="Second-Paper">২য় পত্র (১০)</button>
+    </div>
+    <div class="mobile-drawer-body" id="mobile-drawer-body">
+      <!-- Cloned and synced chapters list for mobile bottom navigation -->
+    </div>
+  </aside>
+
+  <!-- Mobile Fixed Bottom Action Bar (Requirement 4) -->
+  <nav class="mobile-bottom-bar mobile-only" aria-label="Mobile Navigation">
+    <button id="btn-mobile-nav-chapters" class="mobile-bar-btn" title="অধ্যায় ও কনসেপ্ট তালিকা">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <span>অধ্যায়</span>
+    </button>
+    <button id="btn-mobile-nav-practice" class="mobile-bar-btn" title="টাইপভিত্তিক রিভিশন ও প্র্যাকটিস">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+      <span>অনুশীলন</span>
+    </button>
+    <button id="btn-mobile-nav-ai" class="mobile-bar-btn" title="শতদ্রু AI রিসার্চ চ্যাট">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <span>AI রিসার্চ</span>
+    </button>
+    <button id="btn-mobile-nav-common" class="mobile-bar-btn" title="সার্বজনীন গণিত চ্যাট">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>সার্বজনীন</span>
+    </button>
+  </nav>
+
+  <!-- Load Database and Application Scripts -->
+  <script src="concept-data.js"></script>
+  <script src="concept-review.js"></script>
+</body>
+</html>

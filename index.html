@@ -10,6 +10,9 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   
+  <!-- Marked for rich markdown suggestion rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <!-- SolaimanLipi Best Bengali Font CDN -->
   <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
 </head>
@@ -359,6 +362,13 @@
           <div class="chat-message ai-message">
             <strong>শতদ্রু AI:</strong> এই সাজেশন, ২০ বছরের প্রশ্ন প্রবণতা বা কোনো কনফিউজিং টপিক/বিক্রিয়া সম্পর্কে আপনার প্রশ্ন লিখুন।
           </div>
+        </div>
+        <!-- Quick Question Chips -->
+        <div class="suggestion-quick-chips">
+          <button type="button" class="sug-chip" data-query="এই অধ্যায়ের প্রধান বিক্রিয়া ও চক্রগুলোর সারসংক্ষেপ কী?">প্রধান বিক্রিয়া ও চক্র</button>
+          <button type="button" class="sug-chip" data-query="মেডিকেল ও ঢাবি ভর্তি পরীক্ষার বিগত প্রশ্ন প্রবণতা কী?">মেডিকেল ও ঢাবি প্রবণতা</button>
+          <button type="button" class="sug-chip" data-query="কোন ছক ও বৈজ্ঞানিক নামগুলো অবশ্যই মুখস্থ রাখতে হবে?">অবশ্যই মুখস্থ ছক</button>
+          <button type="button" class="sug-chip" data-query="ভর্তি পরীক্ষার ফাঁদ ও নেগেটিভ মার্কিং ট্র্যাপ কী?">ফাঁদ ও সতর্কতা</button>
         </div>
         <div class="suggestion-chat-input-bar">
           <input type="text" id="input-suggestion-query" class="suggestion-input" placeholder="প্রশ্ন লিখুন (যেমন: এই অধ্যায়ের প্রধান বিক্রিয়া বা ট্র্যাপ কি?)...">

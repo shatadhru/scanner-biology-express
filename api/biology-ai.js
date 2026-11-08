@@ -12,7 +12,13 @@ if (fs.existsSync(envPath)) {
   dotenv.config({ path: ocrEnvPath });
 }
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+// Safe API key resolution: supports single GEMINI_API_KEY or comma-separated GEMINI_API_KEYS from .env
+function getGeminiApiKeys() {
+  const raw = process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || '';
+  const keys = raw.split(',').map(k => k.trim()).filter(Boolean);
+  return keys;
+}
+
 // Put gemini-3.1-flash-lite first for rapid high availability, with fallbacks
 const MODELS = ['gemini-3.1-flash-lite', 'gemini-3.5-flash', 'gemini-3.8-flash'];
 
@@ -77,13 +83,12 @@ module.exports = async function handler(req, res) {
       return sendJson(400, { error: 'Missing original question context.' });
     }
 
-    if (!GEMINI_API_KEY) {
+    const apiKeys = getGeminiApiKeys();
+    if (apiKeys.length === 0) {
       return sendJson(500, {
-        error: 'Gemini API key is not configured on the server. Please check environment variables.'
+        error: 'Gemini API key is not configured in .env. Please check environment variables.'
       });
     }
-
-    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
     // Minimal token-efficient context
     let contextStr = '';
@@ -183,42 +188,33 @@ You MUST output ONLY a valid JSON object matching this schema:
       const uniTarget = req.body.universityFilter || 'All Universities';
       prompt = `Chapter: ${chapter || 'জীববিজ্ঞান অধ্যায়'}
 Target Admission Arena: ${uniTarget === 'all' ? 'All Medical & University Admission Tests (DU, Medical/MAT, Agri, GST, RU, JU)' : uniTarget + ' Admission Focus'}
-Topic Question Statistics & Frequency Data:
+Topic Frequency Data:
 ${JSON.stringify(topicSummary || {}, null, 2)}
 
-Task: Write a top-tier, authoritative Medical & University Admission Suggestion and Trend Analysis Document in Bengali Markdown (.md).
+Task: Write a fast-to-read, high-impact, razor-sharp Medical & University Admission Suggestion in Bengali Markdown (.md).
 Authoritative Textbook Reference: ড. মোহাম্মদ আবুল হাসান (উদ্ভিদবিজ্ঞান) এবং প্রফেসর গাজী আজমল (প্রাণীবিজ্ঞান).
 
-Document Structure:
+Output Structure:
 # 🎯 ভর্তি পরীক্ষা স্পেশাল অধ্যায়ভিত্তিক সাজেশন: ${chapter}
-> **টার্গেট:** ${uniTarget === 'all' ? 'মেডিকেল ও ডেন্টাল (MAT/DAT), ঢাকা বিশ্ববিদ্যালয় (DU A-Unit), কৃষি গুচ্ছ (Agri), গুচ্ছ (GST) ও বিশ্ববিদ্যালয় ভর্তি' : uniTarget + ' ভর্তি পরীক্ষা'}
+> **টার্গেট:** ${uniTarget === 'all' ? 'মেডিকেল (MAT), ঢাবি (DU A-Unit), কৃষি গুচ্ছ (Agri), গুচ্ছ (GST)' : uniTarget + ' ভর্তি পরীক্ষা'}
 
-## ১. বিগত ২০ বছরের প্রশ্ন বিশ্লেষণ ও টপিক ওয়েটেজ (Topic Weightage & Frequency Table)
-- Provide a clean Markdown table with columns: [টপিক | বিগত প্রশ্ন সংখ্যা | গুরুত্ব (Star) | প্রধান বিশ্ববিদ্যালয়ের নাম]
-- Identify 3-Star (⭐⭐⭐), 2-Star (⭐⭐), and 1-Star (⭐) topics based on the frequency data.
+## ১. টপিক গুরুত্ব ও বিগত প্রশ্ন বিশ্লেষণ (Topic Priority Table)
+| টপিক | গুরুত্ব | বিগত প্রশ্ন সংখ্যা | প্রশ্ন প্রবণতা |
+(Include top topics with ⭐⭐⭐, ⭐⭐ tags based on frequency data)
 
-## ২. থ্রি-স্টার (⭐⭐⭐) মোস্ট ইম্পর্ট্যান্ট টপিক ও নিশ্চিত কমন কনসেপ্ট
-- Deep dive into the top 3 highest-yield topics with exact textbook definitions, scientific names, and chemical equations ($...$).
+## ২. নিশ্চিত কমন কনসেপ্ট ও বৈজ্ঞানিক তথ্য (Must-Know Concepts)
+- 3 highest-yield core concepts with exact textbook definitions, scientific/botanical names, and chemical formulas ($...$).
 
-## ৩. বিশ্ববিদ্যালয়ভিত্তিক বিগত বছরের প্রশ্ন প্রবণতা (DU, Medical, GST, Agri Trends)
-- What DU specifically loves to ask from this chapter.
-- What Medical/MAT repeatedly tests (exceptions, numerical values, days/sizes).
-- Agri & GST admission patterns.
+## ৩. মেডিকেল ও বিশ্ববিদ্যালয় ভর্তি পরীক্ষার ফাঁদ (Admission Traps & Warnings)
+- 3 confusing terms/exceptions where students lose negative marks (০.২৫ মার্কস কাটার ঝুঁকি).
 
-## ৪. ভর্তি পরীক্ষার ফাঁদ ও কনফিউজিং কনসেপ্ট (Common Admission Traps & Exceptions)
-- Highlight confusing terms where candidates lose negative marks (০.২৫ মার্কস কাটার ঝুঁকি).
-- Clear comparison between easily confused terms.
+## ৪. অবশ্যই মুখস্থযোগ্য ছক ও চার্ট (Must-Memorize Tables)
+- Tabular quick-revision summary of critical classifications, organelles, enzymes, or hormones.
 
-## ৫. অবশ্যই মুখস্থযোগ্য ছক, চার্ট ও বৈজ্ঞানিক পরিভাষা (Must-Memorize Tables)
-- Tabular quick-revision summary of critical classifications, enzyme actions, cell organelles, or hormones.
+## ৫. পরীক্ষার আগের দিন ১ ঘণ্টার কুইক রিভিশন চেকলিস্ট (1-Hour Recall Checklist)
+- Bullet points of top high-yield memory facts and mnemonics.
 
-## ৬. হট সম্ভাব্য ভর্তি প্রশ্নাবলী ও উত্তর সংকেত (High-Yield Practice Questions)
-- 5 to 8 top predicted admission questions with concise answers.
-
-## ৭. পরীক্ষার আগের দিন ১ ঘণ্টার কুইক রিভিশন চেকলিস্ট (Last Minute 1-Hour Recall Checklist)
-- Bulleted checklist of key memory points.
-
-Format strictly as rich, production-grade GitHub Flavored Markdown (.md) with tables, bold headings, bullet points, and KaTeX LaTeX formulas ($...$).`;
+Format in clean GitHub Flavored Markdown with markdown tables, bold headings, bullet points, and KaTeX formulas ($...$). Keep explanations concise, crisp, and high-yield.`;
     } else if (action === 'mcq') {
       prompt = `${contextStr}
 Task: Generate 3 high-yield Multiple Choice Questions (MCQ) directly testing this biological concept in JSON format.
@@ -336,25 +332,29 @@ Requirements:
     let usedModel = '';
     let lastError = null;
 
-    for (const modelName of MODELS) {
-      try {
-        const response = await ai.models.generateContent({
-          model: modelName,
-          contents: prompt,
-          config: {
-            systemInstruction: SYSTEM_INSTRUCTION,
-            temperature: action === 'mcq' || action === 'short' ? 0.2 : 0.3
+    for (const key of apiKeys) {
+      const ai = new GoogleGenAI({ apiKey: key });
+      for (const modelName of MODELS) {
+        try {
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: prompt,
+            config: {
+              systemInstruction: SYSTEM_INSTRUCTION,
+              temperature: action === 'mcq' || action === 'short' ? 0.2 : 0.3
+            }
+          });
+          if (response && response.text) {
+            resultText = response.text;
+            usedModel = modelName;
+            break;
           }
-        });
-        if (response && response.text) {
-          resultText = response.text;
-          usedModel = modelName;
-          break;
+        } catch (err) {
+          lastError = err;
+          console.warn(`Model ${modelName} error:`, err.message);
         }
-      } catch (err) {
-        lastError = err;
-        console.warn(`Model ${modelName} error:`, err.message);
       }
+      if (resultText) break;
     }
 
     if (!resultText) {

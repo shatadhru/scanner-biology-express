@@ -20,6 +20,19 @@ lerna-debug.log*
 .env.production.local
 *.env
 !.env.example
+*.pem
+*.key
+*.crt
+credentials*.json
+client_secret*.json
+serviceAccountKey*.json
+token.json
+
+# Agents & Skills (NEVER COMMIT SKILLS TO REPO)
+.agents/
+.gemini/
+skills/
+skills-lock.json
 
 # OS & Filesystem Metadata
 .DS_Store

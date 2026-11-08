@@ -1250,14 +1250,39 @@ body {
   font-size: 14px;
   line-height: 1.7;
   color: var(--text-main);
-  white-space: pre-wrap;
   word-break: break-word;
 }
 
-.suggestion-body h1, .suggestion-body h2, .suggestion-body h3 {
+.suggestion-body h1 {
+  font-size: 1.22rem;
   color: var(--color-primary);
-  margin-top: 14px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.suggestion-body h2 {
+  font-size: 1.08rem;
+  color: var(--color-primary);
+  margin-top: 18px;
   margin-bottom: 8px;
+}
+
+.suggestion-body h3 {
+  font-size: 0.96rem;
+  color: var(--text-main);
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.suggestion-body blockquote {
+  background: var(--bg-hover);
+  border-left: 4px solid var(--color-primary);
+  padding: 8px 12px;
+  border-radius: 0 6px 6px 0;
+  margin: 10px 0;
+  color: var(--text-secondary);
 }
 
 .suggestion-body ul, .suggestion-body ol {
@@ -1265,15 +1290,22 @@ body {
   margin-bottom: 12px;
 }
 
+.suggestion-body li {
+  margin-bottom: 5px;
+}
+
 .suggestion-body table {
   width: 100%;
   border-collapse: collapse;
   margin: 12px 0;
   font-size: 13px;
+  background: var(--bg-surface);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .suggestion-body th, .suggestion-body td {
-  border: 1px solid var(--border-main);
+  border: 1px solid var(--border-subtle);
   padding: 8px 10px;
   text-align: left;
 }
@@ -1281,6 +1313,42 @@ body {
 .suggestion-body th {
   background-color: var(--bg-muted);
   font-weight: 700;
+  color: var(--text-main);
+}
+
+.suggestion-body tr:nth-child(even) {
+  background-color: var(--bg-hover);
+}
+
+.suggestion-quick-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  scrollbar-width: none;
+}
+
+.suggestion-quick-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.sug-chip {
+  padding: 4px 10px;
+  font-size: 11.5px;
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.sug-chip:hover, .sug-chip:active {
+  background: var(--color-primary-subtle, rgba(2, 132, 199, 0.12));
+  color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 /* AI Persona Quick Selector Strip */
@@ -1761,28 +1829,89 @@ body {
   }
 
   .app-header {
-    padding: 5px 8px;
+    padding: 6px 10px;
+  }
+
+  .header-row-primary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .header-brand {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
   }
 
   .header-brand .app-title {
     font-size: 13.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .active-chapter-indicator {
-    max-width: 120px;
+    max-width: 110px;
     font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px !important;
+    flex-shrink: 0;
   }
 
   .timer-badge {
-    padding: 2px 6px;
-    font-size: 11.5px;
+    padding: 2px 5px !important;
+    font-size: 11.5px !important;
+    flex-shrink: 0;
+  }
+
+  #btn-quick-session {
+    padding: 3px 6px !important;
+    font-size: 11px !important;
+    flex-shrink: 0;
+  }
+
+  .btn-scroll-toggle #scroll-toggle-text,
+  .btn-customize-toggle span {
+    display: none !important;
+  }
+
+  .btn-customize-toggle,
+  .btn-scroll-toggle {
+    padding: 4px 6px !important;
+    flex-shrink: 0;
   }
 
   .header-row-metrics {
-    gap: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 10px;
-    margin-top: 3px;
-    padding-top: 3px;
+    margin-top: 4px;
+    padding-top: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+  }
+
+  .header-row-metrics::-webkit-scrollbar {
+    display: none;
+  }
+
+  .progress-bar-wrap {
+    min-width: 50px;
   }
 
   .questions-viewport {

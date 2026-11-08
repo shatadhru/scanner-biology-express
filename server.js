@@ -14,6 +14,7 @@ if (fs.existsSync(envPath)) {
 }
 
 const biologyAiHandler = require('./api/biology-ai');
+const mathAiHandler = require('./api/math-ai');
 const syncHandler = require('./api/sync');
 
 const app = express();
@@ -25,10 +26,27 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // 1. Navigation & Page Routes
+// Home screen (Portal for Math and Biology)
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'home.html'));
+});
+
+// Math Practice System
+app.get('/math', (req, res) => {
+  res.sendFile(path.join(__dirname, 'math.html'));
+});
+
+// Dedicated Concept Review System (Higher Mathematics)
+app.get('/concept-review', (req, res) => {
+  res.sendFile(path.join(__dirname, 'concept-review.html'));
+});
+
+// Biology Practice System
+app.get('/biology', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Legacy written route for biology
 app.get('/written', (req, res) => {
   res.sendFile(path.join(__dirname, 'written.html'));
 });
@@ -70,11 +88,26 @@ app.get('/api/suggestions/:fileName', (req, res) => {
 
 app.all('/api/biology-ai', async (req, res) => {
   try {
-    await biologyAiHandler(req, res);
+    delete require.cache[require.resolve('./api/biology-ai')];
+    const dynamicBioAi = require('./api/biology-ai');
+    await dynamicBioAi(req, res);
   } catch (err) {
     console.error('API Error in /api/biology-ai:', err);
     if (!res.headersSent) {
       res.status(500).json({ error: err.message || 'Internal AI Server Error' });
+    }
+  }
+});
+
+app.all('/api/math-ai', async (req, res) => {
+  try {
+    delete require.cache[require.resolve('./api/math-ai')];
+    const dynamicMathAi = require('./api/math-ai');
+    await dynamicMathAi(req, res);
+  } catch (err) {
+    console.error('API Error in /api/math-ai:', err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: err.message || 'Internal Math AI Server Error' });
     }
   }
 });
@@ -112,9 +145,11 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`====================================================`);
-  console.log(`Express Biology Practice System running at:`);
-  console.log(`-> MCQ Practice:    http://localhost:${PORT}/`);
-  console.log(`-> Written Practice: http://localhost:${PORT}/written`);
+  console.log(`Shatadhru AI Admission Practice Engine running at:`);
+  console.log(`-> Portal Home:     http://localhost:${PORT}/`);
+  console.log(`-> Math Practice:   http://localhost:${PORT}/math`);
+  console.log(`-> Biology Practice:http://localhost:${PORT}/biology`);
+  console.log(`-> Written Practice:http://localhost:${PORT}/written`);
   console.log(`Press Ctrl+C to stop.`);
   console.log(`====================================================`);
 });
